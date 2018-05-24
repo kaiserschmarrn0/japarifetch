@@ -46,5 +46,5 @@ EOF
 
 if $take_screenshot; then
     sleep 0.1  # Give the terminal time to redraw
-    scrot japarifetch-"$(date "+%H:%M:%S-%Y-%m-%d")".png
+    scrot japarifetch-"$(date "+%F-%T")".png
 fi
