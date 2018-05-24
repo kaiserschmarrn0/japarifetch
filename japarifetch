@@ -1,10 +1,11 @@
 #!/bin/sh
 
+take_screenshot=false
 while getopts ":si" opt; do
 	case "$opt" in
 		i) install -Dm755 "$0" "${PKG}/usr/bin/japarifetch"
 			exit;;
-		s) scrot -d 1 japarifetch-"$(date "+%H:%M:%S-%Y-%m-%d")".png &;;
+		s) take_screenshot=true;;
 		\?) echo "invalid paramter: -$OPTARG" >&2
 			exit;;
 	esac
@@ -42,3 +43,8 @@ ${rc}  yMMs+NMMy ,MMM:	${bc}SHELL:	    ${shell}
 ${rc}   +dNMNh/  shy: 	${bc}WM:	    ${wm}
 ${rc}
 EOF
+
+if $take_screenshot; then
+    sleep 0.1  # Give the terminal time to redraw
+    scrot japarifetch-"$(date "+%H:%M:%S-%Y-%m-%d")".png
+fi
