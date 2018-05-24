@@ -24,6 +24,9 @@ fi
 uptime="$(uptime | awk -F, '{sub(".*up ",x,$1);print $1}' | sed -e 's/^[ \t]*//')"
 if have xbps-query; then
     packages="$(xbps-query -l | wc -l)"
+elif [ -d /var/db/pkg ]; then
+    # Gentoo packages (installed ones go to /var/db/pkg)
+    packages="$(cd /var/db/pkg && set -- */* && echo "$#")"
 else
     packages="$(pkg_info -A | wc -l | sed -e 's/^[ \t]*//')"
 fi
