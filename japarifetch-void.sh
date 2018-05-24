@@ -10,11 +10,22 @@ while getopts ":si" opt; do
 	esac
 done
 
+have() {
+	command -v "$1" >/dev/null
+}
+
 host="$(hostname)"
-os="$(lsb_release -si)"
+if have lsb_release; then
+    os="$(lsb_release -si)"
+else
+    os="$(uname -sr)"
+fi
 uptime="$(uptime | awk -F, '{sub(".*up ",x,$1);print $1}' | sed -e 's/^[ \t]*//')"
-#packages="$(pkg_info -A | wc -l | sed -e 's/^[ \t]*//')"
-packages="$(xbps-query -l | wc -l)"
+if have xbps-query; then
+    packages="$(xbps-query -l | wc -l)"
+else
+    packages="$(pkg_info -A | wc -l | sed -e 's/^[ \t]*//')"
+fi
 shell="$(basename ${SHELL})"
 wm="$(tail -n 1 "${HOME}/.xinitrc" | cut -d ' ' -f 2)"
 
