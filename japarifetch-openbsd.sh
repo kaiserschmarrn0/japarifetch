@@ -2,7 +2,7 @@
 
 while getopts ":si" opt; do
 	case "$opt" in
-		i) install -Dm755 japarifetch.sh "${PKG}/usr/bin/japarifetch"
+		i) install -Dm755 japarifetch-openbsd.sh "${PKG}/usr/bin/japarifetch"
 			exit;;
 		s) scrot -d 1 japarifetch-"$(date "+%H:%M:%S-%Y-%m-%d")".png &;;
 		\?) echo "invalid paramter: -$OPTARG" >&2
