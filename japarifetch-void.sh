@@ -27,7 +27,7 @@ ${rc} ds. ./osso+- .sd	${bc}OS:	    ${os}
 ${rc} hMMNMMNmmmNMMMMd	${bc}UPTIME:	    ${uptime}
 ${rc} \`mMMd:^^\`^-sMMM:	${bc}PACK:	    ${packages}
 ${rc} \`MMM. /NMh  MMMo	${bc}TERM:	    ${TERM}
-${rc}  yMMs+NMMy ,MMM:	${bc}SHELL:	    ${SHELL}
+${rc}  yMMs+NMMy ,MMM:	${bc}SHELL:	    ${shell}
 ${rc}   +dNMNh/  shy: 	${bc}WM:	    ${wm}
 ${rc}
 EOF
