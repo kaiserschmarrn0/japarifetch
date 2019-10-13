@@ -1,20 +1,35 @@
 #!/bin/sh
 
+take_screenshot=false
 while getopts ":si" opt; do
 	case "$opt" in
-		i) install -Dm755 japarifetch-void.sh "${PKG}/usr/bin/japarifetch"
+		i) install -Dm755 "$0" "${PKG}/usr/bin/japarifetch"
 			exit;;
-		s) scrot -d 1 japarifetch-"$(date "+%H:%M:%S-%Y-%m-%d")".png &;;
+		s) take_screenshot=true;;
 		\?) echo "invalid paramter: -$OPTARG" >&2
 			exit;;
 	esac
 done
 
+have() {
+	command -v "$1" >/dev/null
+}
+
 host="$(hostname)"
-os="$(lsb_release -si)"
+if have lsb_release; then
+    os="$(lsb_release -si)"
+else
+    os="$(uname -sr)"
+fi
 uptime="$(uptime | awk -F, '{sub(".*up ",x,$1);print $1}' | sed -e 's/^[ \t]*//')"
-#packages="$(pkg_info -A | wc -l | sed -e 's/^[ \t]*//')"
-packages="$(xbps-query -l | wc -l)"
+if have xbps-query; then
+    packages="$(xbps-query -l | wc -l)"
+elif [ -d /var/db/pkg ]; then
+    # Gentoo packages (installed ones go to /var/db/pkg)
+    packages="$(cd /var/db/pkg && set -- */* && echo "$#")"
+else
+    packages="$(pkg_info -A | wc -l | sed -e 's/^[ \t]*//')"
+fi
 shell="$(basename ${SHELL})"
 wm="$(tail -n 1 "${HOME}/.xinitrc" | cut -d ' ' -f 2)"
 
@@ -31,3 +46,8 @@ ${rc}  yMMs+NMMy ,MMM:	${bc}SHELL:	    ${shell}
 ${rc}   +dNMNh/  shy: 	${bc}WM:	    ${wm}
 ${rc}
 EOF
+
+if $take_screenshot; then
+    sleep 0.1  # Give the terminal time to redraw
+    scrot japarifetch-"$(date "+%F-%T")".png
+fi
